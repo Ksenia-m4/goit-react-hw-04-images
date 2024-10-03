@@ -1,28 +1,23 @@
-import { Component } from "react";
+import { useState } from "react";
 
-import { Searchbar } from "./components/Searchbar/Searchbar.jsx";
-import { ImageGallery } from "./components/ImageGallery/ImageGallery.jsx";
+import ImageGallery from "./components/ImageGallery/ImageGallery.jsx";
+import Searchbar from "./components/Searchbar/Searchbar.jsx";
 
 import "./App.css";
 
-class App extends Component {
-  state = {
-    searchQuery: "",
+const App = () => {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = (searchQuery) => {
+    setQuery(searchQuery);
   };
 
-  handleSearch = (searchQuery) => {
-    this.setState({ searchQuery });
-  };
-
-  render() {
-    const { searchQuery } = this.state;
-    return (
-      <>
-        <Searchbar onSubmit={this.handleSearch} />
-        <ImageGallery searchQuery={searchQuery} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Searchbar onSubmit={handleSearch} />
+      <ImageGallery searchQuery={query} />
+    </>
+  );
+};
 
 export default App;

@@ -1,7 +1,8 @@
-import { Component } from "react";
+import { useState } from "react";
+import { CiSearch } from "react-icons/ci";
+
 import Notiflix from "notiflix";
 import PropTypes from "prop-types";
-import { CiSearch } from "react-icons/ci";
 
 import {
   Header,
@@ -10,13 +11,10 @@ import {
   SearchFormInput,
 } from "./Searchbar.styled";
 
-export class Searchbar extends Component {
-  state = {
-    searchQuery: "",
-  };
+export default function Searchbar({ onSubmit }) {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  handleSubmit = (e) => {
-    const { searchQuery } = this.state;
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (searchQuery === "") {
@@ -24,44 +22,36 @@ export class Searchbar extends Component {
       return;
     }
 
-    this.props.onSubmit(searchQuery);
+    onSubmit(searchQuery);
 
-    this.handleResetForm();
+    setSearchQuery("");
   };
 
-  handleResetForm = () => {
-    this.setState({ searchQuery: "" });
-  };
-
-  handleChange = (event) => {
+  const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    this.setState({
-      searchQuery: value,
-    });
+    setSearchQuery(value);
   };
 
-  render() {
-    return (
-      <Header>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchFormInput
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            onChange={this.handleChange}
-            value={this.state.searchQuery}
-          />
+  return (
+    <Header>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchFormInput
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          onChange={handleChange}
+          value={searchQuery}
+        />
 
-          <SearchFormButton type="submit">
-            <CiSearch size={24} />
-          </SearchFormButton>
-        </SearchForm>
-      </Header>
-    );
-  }
+        <SearchFormButton type="submit">
+          <CiSearch size={24} />
+        </SearchFormButton>
+      </SearchForm>
+    </Header>
+  );
 }
 
 Searchbar.propTypes = {
